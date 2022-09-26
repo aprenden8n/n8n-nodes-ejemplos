@@ -33,7 +33,8 @@
       "dist/credentials/VirusTotalApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/VirusTotal/VirusTotal.node.js"
+      "dist/nodes/VirusTotal/VirusTotal.node.js",
+      "dist/nodes/N8nHackers/N8nHackersTools.node.js"
     ]
   },
   "devDependencies": {
