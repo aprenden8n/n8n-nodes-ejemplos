@@ -117,32 +117,43 @@ export class VirusTotal implements INodeType {
 			 * Limitamos la salida a las propiedades que nos interesan
 			 */
 			 {
-				displayName: 'Type',
-				name: 'type',
-				type: 'collection',
+				displayName: 'Limit Output',
+				name: 'limitOutput',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to limit JSON output to only the properties that are used in the node',
 				displayOptions: {
 					show: {
 						operation: ['domain-info'],
 						resource: ['domain'],
 					},
 				},
+			},
+
+			 {
+				displayName: 'Type',
+				name: 'type',
+				type: 'options',
+				displayOptions: {
+					show: {
+						operation: ['domain-info'],
+						resource: ['domain'],
+						limitOutput: [true],
+					},
+				},
 				placeholder: 'Attribute to get',
 				description: 'Attribute to get',
 				options: [
 					{
-						displayName: 'Last Dns Records',
-						name: 'last_dns_records',
-						type: 'string',
-						default: '',
+						name: 'Last Dns Records',
+						value: 'last_dns_records',
 					},
 					{
-						displayName: 'Whois',
-						name: 'whois',
-						type: 'string',
-						default: '',
+						name: 'Whois',
+						value: 'whois',
 					},
 				],
-				default: {type: 'last_dns_records'},
+				default: 'last_dns_records',
 			},
 		],
 	};
@@ -168,7 +179,8 @@ export class VirusTotal implements INodeType {
 				if (operation === 'domain-info') {
 					// Get email input
 					const domain = this.getNodeParameter('domain', i) as string;
-					const type = this.getNodeParameter('type', i) as string;
+					const limitOutput = this.getNodeParameter('limitOutput', i) as boolean || false;
+					const type = this.getNodeParameter('type', i) as string || '';
 
 					const options: OptionsWithUri = {
 						headers: {
@@ -183,7 +195,16 @@ export class VirusTotal implements INodeType {
 						'virusTotalApi',
 						options,
 					);
-					console.log(responseData);
+
+					// Si limitamos la sa
+					if (limitOutput) {
+						if (type && responseData.data.attributes[type]) {
+							responseData = {
+								output: responseData.data.attributes[type],
+							};
+						}
+					}
+
 					returnData.push(responseData);
 				}
 			}

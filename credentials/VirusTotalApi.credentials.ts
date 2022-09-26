@@ -25,7 +25,7 @@ export class VirusTotalApi implements ICredentialType {
 		type: 'generic',
 		properties: {
 			headers: {
-				'x-apikey': '{{$credentials.apiKey}}',
+				'x-apikey': '={{$credentials.apiKey}}',
 			},
 		},
 	};
@@ -33,7 +33,7 @@ export class VirusTotalApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: 'https://www.virustotal.com/api/v3',
-			url: '/domains',
+			url: '/domains/aprenden8n.com',
 		},
 	};
 }
