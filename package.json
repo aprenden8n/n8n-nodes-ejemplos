@@ -30,11 +30,12 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/VirusTotalApi.credentials.js"
+      "dist/credentials/VirusTotalApi.credentials.js",
+      "dist/credentials/N8nHackersToolsApi.credentials.js"
     ],
     "nodes": [
       "dist/nodes/VirusTotal/VirusTotal.node.js",
-      "dist/nodes/N8nHackers/N8nHackersTools.node.js"
+      "dist/nodes/N8nHackersTools/N8nHackersTools.node.js"
     ]
   },
   "devDependencies": {
