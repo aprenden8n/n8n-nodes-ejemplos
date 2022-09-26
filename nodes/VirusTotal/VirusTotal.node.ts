@@ -1,12 +1,22 @@
+/**
+ * Inicio Paso 1: Agregamos los imports necesarios
+ */
 import { IExecuteFunctions } from 'n8n-core';
-
 import { IDataObject, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
-
 import { OptionsWithUri } from 'request';
+/**
+ * Fin Paso 1: Agregamos los imports necesarios
+ */
 
+
+/**
+ * Inicio Paso 2: Creamos la clase principal del nodo
+ */
 export class VirusTotal implements INodeType {
 	description: INodeTypeDescription = {
-		// Basic node details will go here
+		/**
+		 * Inicio Paso 3: Agregamos los detalles del nodo
+		 */
 		displayName: 'Virus Total',
 		name: 'virusTotal',
 		icon: 'file:virusTotal.svg',
@@ -24,128 +34,156 @@ export class VirusTotal implements INodeType {
 				required: true,
 			},
 		],
+		/**
+		 * Fin Paso 3
+		 */
+
 		properties: [
-			// Resources and operations will go here
+			/**
+			 * Inicio Paso 4: Agregamos el recurso: Domain
+			 *
+			 */
 			{
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
 				options: [
 					{
-						name: 'Contact',
-						value: 'contact',
+						name: 'Domain',
+						value: 'domain',
 					},
 				],
-				default: 'contact',
+				default: 'domain',
 				noDataExpression: true,
 				required: true,
-				description: 'Create a new contact',
+				description: 'Check a domain',
 			},
+			/**
+			 * Fin Paso 4
+			 */
+
+			/**
+			 * Inicio Paso 5: Agregamos la operación: Get Report
+			 * Referencia: https://developers.virustotal.com/reference/domain-info
+			 */
 			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
 				displayOptions: {
 					show: {
-						resource: ['contact'],
+						resource: ['domain'],
 					},
 				},
 				options: [
 					{
-						name: 'Create',
-						value: 'create',
-						description: 'Create a contact',
-						action: 'Create a contact',
+						name: 'Report',
+						value: 'domain-info',
+						description: 'Get a domain report',
+						action: 'Get a domain report',
 					},
 				],
-				default: 'create',
+				default: 'domain-info',
 				noDataExpression: true,
 			},
+			/**
+			 * Fin Paso 5
+			 */
+
+			/**
+			 * Paso 6: Agregamos el parámetro Domain de la operación: Get Report
+			 */
 			{
-				displayName: 'Email',
-				name: 'email',
+				displayName: 'Domain',
+				name: 'domain',
 				type: 'string',
 				required: true,
 				displayOptions: {
 					show: {
-						operation: ['create'],
-						resource: ['contact'],
+						operation: ['domain-info'],
+						resource: ['domain'],
 					},
 				},
 				default: '',
-				placeholder: 'name@email.com',
-				description: 'Primary email for the contact',
+				placeholder: 'aprenden8n.com',
+				description: 'Domain to get a report',
 			},
-			{
-				displayName: 'Additional Fields',
-				name: 'additionalFields',
+			/**
+			 * Fin Paso 6
+			 */
+
+			/**
+			 * Paso 7: Agregamos los parámetros opcionales.
+			 * Limitamos la salida a las propiedades que nos interesan
+			 */
+			 {
+				displayName: 'Type',
+				name: 'type',
 				type: 'collection',
-				placeholder: 'Add Field',
-				default: {},
 				displayOptions: {
 					show: {
-						resource: ['contact'],
-						operation: ['create'],
+						operation: ['domain-info'],
+						resource: ['domain'],
 					},
 				},
+				placeholder: 'Attribute to get',
+				description: 'Attribute to get',
 				options: [
 					{
-						displayName: 'First Name',
-						name: 'firstName',
+						displayName: 'Last Dns Records',
+						name: 'last_dns_records',
 						type: 'string',
 						default: '',
 					},
 					{
-						displayName: 'Last Name',
-						name: 'lastName',
+						displayName: 'Whois',
+						name: 'whois',
 						type: 'string',
 						default: '',
 					},
 				],
+				default: {type: 'last_dns_records'},
 			},
 		],
 	};
-	// The execute method will go here
-	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 
-		// Handle data coming from previous nodes
+	/**
+	 * Paso 8: Agregamos el método de ejecución del nodo
+	 * @param this
+	 * @returns
+	 */
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		// Obtenemos los datos de entrada
 		const items = this.getInputData();
 		let responseData;
 		const returnData = [];
+
+		// Obtenemos los parámetros del nodo
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
 
-		// For each item, make an API call to create a contact
+		//Para todos los items de la entrada
 		for (let i = 0; i < items.length; i++) {
-			if (resource === 'contact') {
-				if (operation === 'create') {
+			if (resource === 'domain') {
+				if (operation === 'domain-info') {
 					// Get email input
-					const email = this.getNodeParameter('email', i) as string;
-					// Get additional fields input
-					const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
-					const data: IDataObject = {
-						email,
-					};
+					const domain = this.getNodeParameter('domain', i) as string;
+					const type = this.getNodeParameter('type', i) as string;
 
-					Object.assign(data, additionalFields);
-
-					// Make HTTP request according to https://sendgrid.com/docs/api-reference/
 					const options: OptionsWithUri = {
 						headers: {
 							Accept: 'application/json',
 						},
-						method: 'PUT',
-						body: {
-							contacts: [data],
-						},
-						uri: `https://api.sendgrid.com/v3/marketing/contacts`,
+						method: 'GET',
+						uri: `https://www.virustotal.com/api/v3/domains/${domain}`,
 						json: true,
 					};
 					responseData = await this.helpers.requestWithAuthentication.call(
 						this,
-						'friendGridApi',
+						'virusTotalApi',
 						options,
 					);
+					console.log(responseData);
 					returnData.push(responseData);
 				}
 			}

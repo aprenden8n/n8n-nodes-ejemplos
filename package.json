@@ -8,8 +8,8 @@
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Miquel Colomer",
+    "email": "miquel@aprenden8n.com"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,8 @@
       "dist/credentials/VirusTotalApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/VirusTotal/VirusTotal.node.js"
+      "dist/nodes/VirusTotal/VirusTotal.node.js",
+      "dist/nodes/N8nHackers/N8nHackers.node.js"
     ]
   },
   "devDependencies": {
