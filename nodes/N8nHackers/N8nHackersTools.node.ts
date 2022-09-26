@@ -50,13 +50,6 @@ export class N8nHackersTools implements INodeType {
 						value: 'installer',
 						description: 'This installer allows to install multiple services in a server',
 					},
-
-					/*
-					{
-						name: 'Integrator',
-						value: 'integrator',
-						description: 'This integrator allows to convert any curl expression to an HTTP request node',
-					},*/
 				],
 				default: 'installer',
 			},
@@ -104,6 +97,9 @@ export class N8nHackersTools implements INodeType {
 				],
 				default: 'services',
 			},
+			/**
+			 * Paso 6: Agregamos los parámetros de las operaciones
+			 */
 			{
 				displayName: 'Service',
 				description: 'Choose which Service do you want to install',
@@ -119,58 +115,6 @@ export class N8nHackersTools implements INodeType {
 					show: {
 						operation: [
 							'service',
-						],
-					},
-				},
-			},
-			{
-				displayName: 'Operation',
-				name: 'operation',
-				type: 'options',
-				noDataExpression: true,
-				displayOptions: {
-					show: {
-						resource: [
-							'integrator',
-						],
-					},
-				},
-				options: [
-					{
-						name: 'Generate',
-						action: 'Generate an HTTP request node using a CURL expression',
-						description: 'Generate an HTTP request node using a CURL expression',
-						value: 'generate',
-						routing: {
-							request: {
-								method: 'POST',
-								url: '/tools/integrator',
-								body: {
-									curl: '{{$parameter.curl}}',
-								},
-							},
-						},
-					},
-				],
-				default: 'generate',
-			},
-			{
-				displayName: 'Curl Expression',
-				description: 'Define curl expression to convert to HTTP request node',
-				required: true,
-				name: 'curl',
-				type: 'string',
-				typeOptions: {
-					rows: 4,
-				},
-				default: '',
-				displayOptions: {
-					show: {
-						resource: [
-							'integrator',
-						],
-						operation: [
-							'generate',
 						],
 					},
 				},
