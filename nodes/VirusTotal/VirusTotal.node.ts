@@ -180,7 +180,6 @@ export class VirusTotal implements INodeType {
 					// Get email input
 					const domain = this.getNodeParameter('domain', i) as string;
 					const limitOutput = this.getNodeParameter('limitOutput', i) as boolean || false;
-					const type = this.getNodeParameter('type', i) as string || '';
 
 					const options: OptionsWithUri = {
 						headers: {
@@ -198,7 +197,9 @@ export class VirusTotal implements INodeType {
 
 					// Si limitamos la sa
 					if (limitOutput) {
-						if (type && responseData.data.attributes[type]) {
+						// Recuperar type si se quiere limitar la salida
+						const type = this.getNodeParameter('type', i) as string || '';
+						if (type && type.length && responseData.data.attributes[type]) {
 							responseData = {
 								output: responseData.data.attributes[type],
 							};
