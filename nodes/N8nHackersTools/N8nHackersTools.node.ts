@@ -50,13 +50,11 @@ export class N8nHackersTools implements INodeType {
 						value: 'installer',
 						description: 'This installer allows to install multiple services in a server',
 					},
-
-					/*
 					{
 						name: 'Integrator',
 						value: 'integrator',
 						description: 'This integrator allows to convert any curl expression to an HTTP request node',
-					},*/
+					},
 				],
 				default: 'installer',
 			},
@@ -152,7 +150,7 @@ export class N8nHackersTools implements INodeType {
 								method: 'POST',
 								url: '/tools/integrator',
 								body: {
-									curl: '{{$parameter.curl}}',
+									curl: '={{$parameter.curl}}',
 								},
 							},
 						},
