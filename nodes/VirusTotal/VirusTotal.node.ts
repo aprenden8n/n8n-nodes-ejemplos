@@ -20,8 +20,9 @@ export class VirusTotal implements INodeType {
 		displayName: 'Virus Total',
 		name: 'virusTotal',
 		icon: 'file:virusTotal.svg',
-		group: ['marketing'],
+		group: ['security'],
 		version: 1,
+		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Consume VirusTotal API',
 		defaults: {
 			name: 'VirusTotal',

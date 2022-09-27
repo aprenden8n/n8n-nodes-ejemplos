@@ -13,9 +13,9 @@ export class N8nHackersTools implements INodeType {
 		 * Paso 3: Agregar detalles del nodo
 		 */
 		displayName: 'N8n Hackers Tools',
-		name: 'N8nHackersTools',
+		name: 'n8nHackersTools',
 		icon: 'file:n8nHackersTools.svg',
-		group: ['transform'],
+		group: ['utility'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Use tools from N8n Hackers API',
