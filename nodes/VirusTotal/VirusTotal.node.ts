@@ -101,8 +101,8 @@ export class VirusTotal implements INodeType {
 				required: true,
 				displayOptions: {
 					show: {
-						operation: ['domain-info'],
 						resource: ['domain'],
+						operation: ['domain-info'],
 					},
 				},
 				default: '',

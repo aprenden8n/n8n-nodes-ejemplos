@@ -25,7 +25,10 @@ export class N8nHackersTools implements INodeType {
 		inputs: ['main'],
 		outputs: ['main'],
 		credentials: [
-
+			{
+				name: 'n8nHackersToolsApi',
+				required: false,
+			 },
 		],
 		requestDefaults: {
 			baseURL: 'https://api.n8nhackers.com',
