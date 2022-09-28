@@ -27,7 +27,7 @@ export class N8nHackersTools implements INodeType {
 		credentials: [
 			{
 				name: 'n8nHackersToolsApi',
-				required: true,
+				required: false,
 			 },
 		],
 		requestDefaults: {
